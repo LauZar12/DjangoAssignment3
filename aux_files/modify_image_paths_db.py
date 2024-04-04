@@ -10,5 +10,5 @@ class Command(BaseCommand):
         for item in items:
             item.image.name = f"{item.image.name[0:13]}{item.title}.jpg" 
             item.save()
-        
+
         self.stdout.write(self.style.SUCCESS(f'Successfully updated with the illustrations of the movies'))
