@@ -29,6 +29,15 @@ def signup(request):
     return render(request, 'signup.html', {'email':email})
 
 
+def recommendations(request):
+    searchTerm = request.GET.get('searchMovie') # GET se usa para solicitar recursos de un servidor
+    if searchTerm:
+        movies = Movie.objects.filter(title__icontains=searchTerm)
+    else:
+        movies = Movie.objects.all()
+    return render(request, 'recommendations.html', {'searchTerm':searchTerm, 'movies':movies})
+
+
 def statistics_view0(request):
     matplotlib.use('Agg')
     # Obtener todas las películas
