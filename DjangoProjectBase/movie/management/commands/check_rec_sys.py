@@ -25,10 +25,10 @@ class Command(BaseCommand):
         # This is the default and can be omitted
             api_key=os.environ.get('openAI_api_key'),
         )
-
+        
         items = Movie.objects.all()
 
-        req = "película para niños"
+        req = "pelicula niños sin autismo"
         emb_req = get_embedding(req, client)
 
         sim = []

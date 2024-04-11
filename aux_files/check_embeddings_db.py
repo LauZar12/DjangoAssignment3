@@ -8,8 +8,9 @@ class Command(BaseCommand):
     help = 'Modify path of images'
 
     def handle(self, *args, **kwargs):
-
+  
         items = Movie.objects.all()
         item = items[10]
         print(item.emb)
-
+        
+        

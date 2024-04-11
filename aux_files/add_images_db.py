@@ -38,7 +38,8 @@ class Command(BaseCommand):
             )
             image_url = response['data'][0].url
             img = fetch_image(image_url)
-            img.save(f'media/movie/images/{item.title}.jpg')
-            item.image = f'movie/images/{item.title}.jpg'
+            img.save(f'media/movie/images/{item.title}.jpg')           
+            item.image = f'movie/images/{item.title}.jpg'   
             item.save()
         self.stdout.write(self.style.SUCCESS(f'Successfully updated items'))
+        

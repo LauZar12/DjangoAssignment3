@@ -19,23 +19,47 @@ def home(request):
         movies = Movie.objects.all()
     return render(request, 'home.html', {'searchTerm':searchTerm, 'movies':movies})
 
+def recommendations(request):
+    recommendationPrompt = request.GET.get('recommendationPrompt')
+    print(f"{recommendationPrompt=}")
+    if recommendationPrompt:
+        from openai import OpenAI
+        from dotenv import load_dotenv
+        import os
+        _ = load_dotenv('../openAI.env')
+        client = OpenAI(api_key=os.environ.get("openAI_api_key"))
+
+        import numpy as np
+        cosine_similarity = lambda movie, rec: np.dot(movie, rec) / (np.linalg.norm(movie) * np.linalg.norm(rec))
+
+        embedding_rec =  client.embeddings.create(
+            input = [recommendationPrompt.replace('\n', ' ')],
+            model='text-embedding-3-small'
+        ).data[0].embedding
+
+        movies = Movie.objects.all()
+        similarity = []
+        for movie in movies:
+            movie_emb = np.frombuffer(movie.emb)
+            similarity.append(cosine_similarity(movie_emb, embedding_rec))
+        index = int(np.argmax(similarity))
+
+        movie = movies[index]
+    else:
+        movie = None
+    return render(request, 'recommendations.html', {
+        'recommendationPrompt': recommendationPrompt,
+        'movie': movie,
+    })
+
 
 def about(request):
     #return HttpResponse('<h1>Welcome to About Page</h1>')
     return render(request, 'about.html')
 
 def signup(request):
-    email = request.GET.get('email')
+    email = request.GET.get('email') 
     return render(request, 'signup.html', {'email':email})
-
-
-def recommendations(request):
-    searchTerm = request.GET.get('searchMovie') # GET se usa para solicitar recursos de un servidor
-    if searchTerm:
-        movies = Movie.objects.filter(title__icontains=searchTerm)
-    else:
-        movies = Movie.objects.all()
-    return render(request, 'recommendations.html', {'searchTerm':searchTerm, 'movies':movies})
 
 
 def statistics_view0(request):

@@ -12,14 +12,14 @@ class Command(BaseCommand):
         json_file_path = '../movie_descriptions_embeddings.json'
         # Load data from the JSON file
         with open(json_file_path, 'r') as file:
-            movies = json.load(file)
-
+            movies = json.load(file)       
+  
         for movie in movies:
             emb = movie['embedding']
             emb_binary = np.array(emb).tobytes()
             item = Movie.objects.filter(title = movie['title']).first()
             item.emb = emb_binary
             item.save()
-
-        self.stdout.write(self.style.SUCCESS(f'Successfully updated item embeddings'))
-
+        
+        self.stdout.write(self.style.SUCCESS(f'Successfully updated item embeddings'))        
+        

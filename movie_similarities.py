@@ -17,7 +17,7 @@ with open('movie_descriptions.json', 'r') as file:
 
 #Esta función devuelve una representación numérica (embedding) de un texto, en este caso
 #la descripción de las películas
-
+    
 def get_embedding(text, model="text-embedding-3-small"):
    text = text.replace("\n", " ")
    return client.embeddings.create(input = [text], model=model).data[0].embedding
@@ -56,11 +56,11 @@ print(f"Similitud entre película {movies[27]['title']} y {movies[3]['title']}: 
 print(f"Similitud entre película {movies[27]['title']} y {movies[20]['title']}: {cosine_similarity(movies[27]['embedding'],movies[20]['embedding'])}")
 print(f"Similitud entre película {movies[20]['title']} y {movies[3]['title']}: {cosine_similarity(movies[20]['embedding'],movies[3]['embedding'])}")
 
-#Si se tuviera un prompt por ejemplo: Película de la segunda guerra mundial, podríamos generar el embedding del prompt y comparar contra
+#Si se tuviera un prompt por ejemplo: Película de la segunda guerra mundial, podríamos generar el embedding del prompt y comparar contra 
 #los embeddings de cada una de las películas de la base de datos. La película con la similitud más alta al prompt sería la película
 #recomendada.
 
-req = "película para niñoñs responsables"
+req = "random"
 emb = get_embedding(req)
 
 sim = []
